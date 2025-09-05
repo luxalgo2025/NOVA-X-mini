@@ -1,31 +1,38 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+
 const app = express();
-__path = process.cwd()
-const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 8000;
-let code = require('./pair'); 
+const code = require('./pair');
 
 require('events').EventEmitter.defaultMaxListeners = 500;
 
-app.use('/code', code);
-app.use('/pair', async (req, res, next) => {
-    res.sendFile(__path + '/pair.html')
-});
-app.use('/', async (req, res, next) => {
-    res.sendFile(__path + '/main.html')
-});
+const __path = process.cwd();
 
+// Middleware first
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Routes
+app.use('/code', code);
+
+app.get('/pair', (req, res) => {
+  res.sendFile(path.join(__path, 'pair.html'));
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__path, 'main.html'));
+});
+
+// Start server
 app.listen(PORT, () => {
-    console.log(`
+  console.log(`
 Don't Forget To Give Star ‼️
 
 𝙽𝙾𝚅𝙰-𝚇 𝙼𝙸𝙽𝙸 𝙱𝙾𝚃 𝚂𝚈𝚂𝚃𝙴𝙼
 𝙽𝙾𝚅𝙰-𝚇 [𝙻𝙴𝙶𝙴𝙽𝙳 𝙾𝙵 𝚁𝚄𝙸𝙽)
 
-Server running on http://localhost:` + PORT)
+Server running on http://localhost:${PORT}
+`);
 });
-
-module.exports = app;
