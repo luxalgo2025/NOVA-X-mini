@@ -21,7 +21,7 @@ const {
     proto,
     prepareWAMessageMedia,
     generateWAMessageFromContent
-} = require('baileys');
+} = require('baileys/lib');
 
 const config = {
     AUTO_VIEW_STATUS: 'true',
